@@ -18,14 +18,15 @@ st.set_page_config(
 # =========================
 st.markdown("""
 <style>
+/* Nền chính */
 .stApp {
-    background: linear-gradient(135deg, #e8f5e9, #ffffff);
+    background: linear-gradient(135deg, #0f2f1f, #1b4332, #2d6a4f);
 }
 
 /* Tiêu đề chính */
 .main-title {
     text-align: center;
-    color: #1b5e20 !important;
+    color: #ffffff !important;
     font-size: 42px;
     font-weight: bold;
     margin-bottom: 5px;
@@ -34,47 +35,47 @@ st.markdown("""
 /* Tiêu đề phụ */
 .sub-title {
     text-align: center;
-    color: #2e2e2e !important;
+    color: #d8f3dc !important;
     font-size: 18px;
     margin-bottom: 30px;
 }
 
-/* Chữ tổng quát */
+/* Chữ tổng quát trên nền tối */
 h1, h2, h3, h4, h5, h6, p, label, span {
-    color: #1f2937 !important;
+    color: #ffffff !important;
 }
 
 /* Chữ markdown */
 [data-testid="stMarkdownContainer"] {
-    color: #1f2937 !important;
+    color: #ffffff !important;
 }
 
 /* Radio */
 .stRadio label {
-    color: #1f2937 !important;
+    color: #ffffff !important;
     font-weight: 500 !important;
 }
 
 .stRadio div {
-    color: #1f2937 !important;
+    color: #ffffff !important;
 }
 
 /* File uploader label */
 .stFileUploader label {
-    color: #1f2937 !important;
+    color: #ffffff !important;
     font-weight: 600 !important;
 }
 
 /* Camera label */
 .stCameraInput label {
-    color: #1f2937 !important;
+    color: #ffffff !important;
     font-weight: 600 !important;
 }
 
 /* Khung upload */
 [data-testid="stFileUploaderDropzone"] {
     background-color: #ffffff !important;
-    border: 2px dashed #2e7d32 !important;
+    border: 2px dashed #95d5b2 !important;
     border-radius: 15px !important;
 }
 
@@ -85,7 +86,7 @@ h1, h2, h3, h4, h5, h6, p, label, span {
 
 /* File đã upload */
 [data-testid="stFileUploaderFile"] {
-    background-color: #f1f8e9 !important;
+    background-color: #e9f5ec !important;
     color: #1f2937 !important;
     border-radius: 12px !important;
 }
@@ -96,7 +97,7 @@ h1, h2, h3, h4, h5, h6, p, label, span {
 
 /* Nút bấm */
 .stButton button {
-    background-color: #1b5e20 !important;
+    background-color: #52b788 !important;
     color: white !important;
     border-radius: 12px !important;
     padding: 10px 24px !important;
@@ -106,8 +107,13 @@ h1, h2, h3, h4, h5, h6, p, label, span {
 }
 
 .stButton button:hover {
-    background-color: #2e7d32 !important;
+    background-color: #40916c !important;
     color: white !important;
+}
+
+/* Ảnh hiển thị */
+[data-testid="stImage"] {
+    border-radius: 18px !important;
 }
 
 /* Khung kết quả */
@@ -115,10 +121,10 @@ h1, h2, h3, h4, h5, h6, p, label, span {
     background-color: #ffffff;
     padding: 25px;
     border-radius: 20px;
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.12);
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.25);
     text-align: center;
     margin-top: 20px;
-    border: 2px solid #c8e6c9;
+    border: 2px solid #95d5b2;
 }
 
 .money-result {
@@ -135,23 +141,33 @@ h1, h2, h3, h4, h5, h6, p, label, span {
 
 /* Khung hướng dẫn */
 .info-box {
-    background-color: #f1f8e9;
+    background-color: #ffffff;
     color: #1f2937 !important;
     padding: 18px;
     border-radius: 15px;
-    border-left: 6px solid #43a047;
+    border-left: 6px solid #52b788;
     margin-top: 20px;
     line-height: 1.7;
+    box-shadow: 0px 4px 14px rgba(0,0,0,0.18);
 }
 
 .info-box b {
     color: #1b5e20 !important;
 }
 
+.info-box div, .info-box span, .info-box p {
+    color: #1f2937 !important;
+}
+
+/* Success / warning text dễ đọc */
+.stAlert div {
+    color: #1f2937 !important;
+}
+
 /* Footer */
 .footer {
     text-align: center;
-    color: #6b7280 !important;
+    color: #d8f3dc !important;
     margin-top: 30px;
 }
 </style>
@@ -184,7 +200,7 @@ model = load_money_model()
 # LABEL
 # =========================
 # Giữ nguyên label KHÔNG có VND
-# Thứ tự này phải đúng với train_generator.class_indices lúc train
+# Phải đúng với train_generator.class_indices lúc train
 class_labels = {
     0: "10000",
     1: "100000",
