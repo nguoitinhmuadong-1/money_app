@@ -22,21 +22,95 @@ st.markdown("""
     background: linear-gradient(135deg, #e8f5e9, #ffffff);
 }
 
+/* Tiêu đề chính */
 .main-title {
     text-align: center;
-    color: #1b5e20;
+    color: #1b5e20 !important;
     font-size: 42px;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
+/* Tiêu đề phụ */
 .sub-title {
     text-align: center;
-    color: #4e4e4e;
+    color: #2e2e2e !important;
     font-size: 18px;
     margin-bottom: 30px;
 }
 
+/* Chữ tổng quát */
+h1, h2, h3, h4, h5, h6, p, label, span {
+    color: #1f2937 !important;
+}
+
+/* Chữ markdown */
+[data-testid="stMarkdownContainer"] {
+    color: #1f2937 !important;
+}
+
+/* Radio */
+.stRadio label {
+    color: #1f2937 !important;
+    font-weight: 500 !important;
+}
+
+.stRadio div {
+    color: #1f2937 !important;
+}
+
+/* File uploader label */
+.stFileUploader label {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+}
+
+/* Camera label */
+.stCameraInput label {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+}
+
+/* Khung upload */
+[data-testid="stFileUploaderDropzone"] {
+    background-color: #ffffff !important;
+    border: 2px dashed #2e7d32 !important;
+    border-radius: 15px !important;
+}
+
+/* Chữ trong khung upload */
+[data-testid="stFileUploaderDropzone"] div {
+    color: #1f2937 !important;
+}
+
+/* File đã upload */
+[data-testid="stFileUploaderFile"] {
+    background-color: #f1f8e9 !important;
+    color: #1f2937 !important;
+    border-radius: 12px !important;
+}
+
+[data-testid="stFileUploaderFile"] div {
+    color: #1f2937 !important;
+}
+
+/* Nút bấm */
+.stButton button {
+    background-color: #1b5e20 !important;
+    color: white !important;
+    border-radius: 12px !important;
+    padding: 10px 24px !important;
+    font-weight: bold !important;
+    border: none !important;
+    width: 100%;
+}
+
+.stButton button:hover {
+    background-color: #2e7d32 !important;
+    color: white !important;
+}
+
+/* Khung kết quả */
 .result-box {
     background-color: #ffffff;
     padding: 25px;
@@ -44,25 +118,41 @@ st.markdown("""
     box-shadow: 0px 4px 20px rgba(0,0,0,0.12);
     text-align: center;
     margin-top: 20px;
+    border: 2px solid #c8e6c9;
 }
 
 .money-result {
-    font-size: 36px;
+    font-size: 38px;
     font-weight: bold;
-    color: #1b5e20;
+    color: #1b5e20 !important;
 }
 
 .confidence {
     font-size: 22px;
-    color: #333333;
+    color: #333333 !important;
+    margin-top: 8px;
 }
 
+/* Khung hướng dẫn */
 .info-box {
     background-color: #f1f8e9;
+    color: #1f2937 !important;
     padding: 18px;
     border-radius: 15px;
     border-left: 6px solid #43a047;
     margin-top: 20px;
+    line-height: 1.7;
+}
+
+.info-box b {
+    color: #1b5e20 !important;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    color: #6b7280 !important;
+    margin-top: 30px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -70,8 +160,15 @@ st.markdown("""
 # =========================
 # TIÊU ĐỀ
 # =========================
-st.markdown('<div class="main-title">💵 AD Money Recognition</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Ứng dụng AI nhận diện mệnh giá tiền Việt Nam</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="main-title">💵 AD Money Recognition</div>',
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    '<div class="sub-title">Ứng dụng AI nhận diện mệnh giá tiền Việt Nam</div>',
+    unsafe_allow_html=True
+)
 
 # =========================
 # LOAD MODEL
@@ -86,6 +183,8 @@ model = load_money_model()
 # =========================
 # LABEL
 # =========================
+# Giữ nguyên label KHÔNG có VND
+# Thứ tự này phải đúng với train_generator.class_indices lúc train
 class_labels = {
     0: "10000",
     1: "100000",
@@ -115,7 +214,7 @@ def predict_money(image):
     return predicted_label, confidence
 
 # =========================
-# CHỌN CHỨC NĂNG
+# GIAO DIỆN NHẬP ẢNH
 # =========================
 st.markdown("### Chọn cách nhập ảnh")
 
@@ -143,10 +242,14 @@ elif option == "Chụp ảnh trực tiếp":
         image = Image.open(camera_file)
 
 # =========================
-# HIỂN THỊ ẢNH VÀ DỰ ĐOÁN
+# HIỂN THỊ ẢNH VÀ KẾT QUẢ
 # =========================
 if image is not None:
-    st.image(image, caption="Ảnh đã chọn", use_container_width=True)
+    st.image(
+        image,
+        caption="Ảnh đã chọn",
+        use_container_width=True
+    )
 
     if st.button("🔍 Nhận diện mệnh giá"):
         label, confidence = predict_money(image)
@@ -159,17 +262,20 @@ if image is not None:
         """, unsafe_allow_html=True)
 
         if confidence < 60:
-            st.warning("Độ tin cậy hơi thấp. Anh nên chụp rõ tờ tiền hơn, đủ sáng và không bị che khuất.")
+            st.warning(
+                "Độ tin cậy hơi thấp. Anh nên chụp ảnh rõ hơn, đủ sáng, không bị che khuất và thấy rõ toàn bộ tờ tiền."
+            )
         else:
             st.success("Nhận diện thành công!")
 
 else:
     st.markdown("""
     <div class="info-box">
-        <b>Hướng dẫn:</b><br>
-        1. Tải ảnh tiền Việt lên hoặc chụp trực tiếp bằng camera.<br>
-        2. Nhấn nút <b>Nhận diện mệnh giá</b>.<br>
-        3. App sẽ hiển thị mệnh giá dự đoán và độ tin cậy.
+        <b>Hướng dẫn sử dụng:</b><br>
+        1. Chọn <b>Tải ảnh lên</b> hoặc <b>Chụp ảnh trực tiếp</b>.<br>
+        2. Đưa ảnh tờ tiền Việt Nam vào hệ thống.<br>
+        3. Nhấn nút <b>Nhận diện mệnh giá</b>.<br>
+        4. App sẽ hiển thị mệnh giá dự đoán và độ tin cậy.
     </div>
     """, unsafe_allow_html=True)
 
@@ -178,6 +284,6 @@ else:
 # =========================
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: gray;'>Developed by AD</p>",
+    '<p class="footer">Developed by AD</p>',
     unsafe_allow_html=True
 )
